@@ -2,11 +2,11 @@ package com.zzu.dataobject;
 
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
+
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.Transient;
+
 
 import org.hibernate.annotations.DynamicUpdate;
 

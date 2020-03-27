@@ -3,7 +3,7 @@ package com.zzu.viewObject;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.zzu.dataobject.ProductInfo;
+
 
 public class ProductVO {
     public String getCategoryName() {

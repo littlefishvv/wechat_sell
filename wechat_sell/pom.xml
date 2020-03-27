@@ -29,19 +29,35 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
-			<exclusions>
+			<!-- <scope>test</scope> -->
+			<!--  <exclusions>
 				<exclusion>
 					<groupId>org.junit.vintage</groupId>
 					<artifactId>junit-vintage-engine</artifactId>
 				</exclusion>
-			</exclusions>
+			</exclusions>-->
 		</dependency>
+		<!-- json转换工具 -->
+		<dependency>
+		<groupId>com.google.code.gson</groupId>
+		<artifactId>gson</artifactId>
+		</dependency>
+		
+
 		<!-- 资源配置文件没有自动提示功能用下面的方法 -->
 		<dependency>
 	          <groupId>org.springframework.boot</groupId>
 	           <artifactId>spring-boot-configuration-processor</artifactId>
 	          <optional>true</optional>
+        </dependency>
+        <!--下面这两个是日志系统 -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
         </dependency>
         <!--下面这两个是和 数据库相关的-->
         <dependency>
