@@ -1,13 +1,18 @@
 package com.zzu.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.zzu.dataobject.*;
+import com.zzu.serializer.Date2LongSerializer;
+
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 
-
-
+//这样返回的话会自动去除null字段
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderDTO {
 
     /**订单id*/
@@ -35,12 +40,14 @@ public class OrderDTO {
     private Integer payStatus ;
 
     /**创建时间*/
+    @JsonSerialize(using=Date2LongSerializer.class)
     private Date createTime;
 
     /**更新时间*/
+    @JsonSerialize(using=Date2LongSerializer.class)
     private Date updateTime;
     
-    List<OrderDetail> orderDetailList;
+    List<OrderDetail> orderDetailList=new ArrayList<>();
 
 	public String getOrderId() {
 		return orderId;

@@ -1,7 +1,7 @@
 server:
   port: 8081
   servlet:
-    context-path: /wechat_sell
+    context-path: /sell
  
 spring:
   datasource:
@@ -11,5 +11,25 @@ spring:
     password: 123456
   jpa:
     show-sql: true
-   
-    
+  freemarker:
+    request-context-attribute: req
+    suffix: .ftl
+    content-type: text/html; charset=utf-8
+    cache: false
+    template-loader-path: classpath:/templates
+    check-template-location: true
+    expose-request-attributes: false
+    expose-session-attributes: false
+wechat:
+  #这是测试号用来测试微信授权的 这个号专门用来授权，是因为授权要设置白名单，老师的账号不会把我的地址设置进去，就会导致redirect_url错误
+   mpAppId: wx8cb25fa950a26b8e
+   mpAppSecret: 0c20506ffd3e9ff0197d2027a311cc6e
+  
+  #下面的是我借用的燎师兄的账号，可以用来进行支付的相关测试
+   #mpAppId: wxd898fcb01713c658
+   mchId: 1483469312
+   mchKey: 098F6BCD4621D373CADE4E832627B4F6
+   keyPath: D:/360极速浏览器下载/h5.p12 #证书文件的完整路径，证书下载：课程源码doc目录下的h5.p12
+   #这个支付不需要退款需要
+   notifyUrl: http://wechat-gsy.natapp1.cc/sell/pay/notify
+   #openId: oTgZpwbIFdr-HQ9fYd2P-xtm6jUM

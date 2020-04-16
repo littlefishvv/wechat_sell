@@ -36,6 +36,8 @@ public class OrderServiceImpl implements OrderService {
 	private OrderDetailRepository orderDetailRepository;
 	@Autowired
 	private OrderMasterRepository orderMasterRepository;
+	@Autowired 
+	private PayService payService;
 	@Override
 	//创建订单 一个主订单要有多个订单详情 ，这个方法的目的是创建多个订单详情的记录放到数据库中，一开始的orderdetail并没有在
 	//数据库中，因为只有经过了repository的save方法后才能放到数据库中去
@@ -95,7 +97,8 @@ public class OrderServiceImpl implements OrderService {
 		// TODO Auto-generated method stub
         //只要遇到optional的对象，在任何情况下都要加orelse，否则会当作null来判断
 		Optional<OrderMaster> orderMaster=orderMasterRepository.findById(orderId);
-		if(orderMaster.isPresent()==false) throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+		System.out.println("orderId:"+orderId);
+		if(orderMaster.isPresent()==false) throw new SellException(ResultEnum.ORDER_NOT_EXISTS);
 
         //2.查看订单详情  通过查看订单ID找到订单详情列表
         List<OrderDetail> orderDetailList = orderDetailRepository.findByOrderId(orderId);
@@ -149,7 +152,8 @@ public class OrderServiceImpl implements OrderService {
 		 productService.increaseStock(cartDTOList);
 		//如果已支付，需要退款
 		 if(PayStatusEnum.SUCCESS.getCode().equals(orderDTO.getPayStatus())) {
-	         //TODO   payService.refund(orderDTO);
+	         //TODO   
+			 payService.refund(orderDTO);
 	        }
 
 	        return orderDTO;
@@ -184,7 +188,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional 
 	public OrderDTO pay(OrderDTO orderDTO) {
 		// TODO Auto-generated method stub
 		//先判断订单状态
@@ -217,5 +221,31 @@ public class OrderServiceImpl implements OrderService {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+    @Transactional
+    public OrderDTO paid(OrderDTO orderDTO) {
+        //判断订单状态
+        if (!orderDTO.getOrderStatus().equals(OrderStatusEnum.NEW.getCode())) {
+          //  log.error("【订单支付完成】订单状态不正确, orderId={}, orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
+            throw new SellException(ResultEnum.ORDER_STATUS_ERROR);
+        }
 
+        //判断支付状态
+        if (!orderDTO.getPayStatus().equals(PayStatusEnum.WAIT.getCode())) {
+          //  log.error("【订单支付完成】订单支付状态不正确, orderDTO={}", orderDTO);
+            throw new SellException(ResultEnum.ORDER_PAY_STATUS_ERROR);
+        }
+
+        //修改支付状态
+        orderDTO.setPayStatus(PayStatusEnum.SUCCESS.getCode());
+        OrderMaster orderMaster = new OrderMaster();
+        BeanUtils.copyProperties(orderDTO, orderMaster);
+        OrderMaster updateResult = orderMasterRepository.save(orderMaster);
+        if (updateResult == null) {
+           // log.error("【订单支付完成】更新失败, orderMaster={}", orderMaster);
+            throw new SellException(ResultEnum.ORDER_UPDATE_FAIL);
+        }
+
+        return orderDTO;
+    }
 }

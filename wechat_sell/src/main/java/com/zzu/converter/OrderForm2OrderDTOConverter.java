@@ -18,7 +18,7 @@ public static OrderDTO convert(OrderForm orderForm){
     orderDTO.setBuyerName(orderForm.getName());
     orderDTO.setBuyerPhone(orderForm.getPhone());
     orderDTO.setBuyerAddress(orderForm.getAddress());
-    orderDTO.setBuyerOpenid(orderForm.getOpenid());
+    orderDTO.setBuyerOpenid("oTgZpwbIFdr-HQ9fYd2P-xtm6jUM");
 
     //订单详情
     //这是一个插件，把json转成list

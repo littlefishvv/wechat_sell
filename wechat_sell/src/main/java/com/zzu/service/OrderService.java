@@ -30,4 +30,6 @@ public interface OrderService {
 
     /**查找订单.**/
     Page<OrderDTO> findList(Pageable pageable);
+
+	OrderDTO paid(OrderDTO orderDTO);
 }

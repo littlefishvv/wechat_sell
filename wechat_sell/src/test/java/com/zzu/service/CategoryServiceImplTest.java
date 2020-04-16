@@ -48,11 +48,10 @@ public class CategoryServiceImplTest {
     @Transactional
     public void save() throws Exception {
         ProductCategory productCategory = new ProductCategory();
-        productCategory.setCategoryType(5);
+        productCategory.setCategoryType(6);
         productCategory.setCategoryName("男生专区");
 
         productCategory = categoryService.save(productCategory);
-
         Assert.assertNotEquals(null , productCategory);
 
     }

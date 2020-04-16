@@ -27,16 +27,15 @@ public class ProductCategoryTest {
 	public void saveTest(){
 	    ProductCategory product =new ProductCategory();
 	    product.setCategoryName("男装");
-	    product.setCategoryType(002);
+	    product.setCategoryType(12);
 	    repository.save(product);
 	}
 	@Test
 	public void findByCategoryTypeInTest(){
 		List<Integer> list=new ArrayList<>();
-		list.add(111);
-		list.add(333);
+		list.add(1);
+		list.add(3);
 		List<ProductCategory> result=repository.findByCategoryTypeIn(list);
-		
 		Assert.assertNotEquals(0, result.size());
 	}
 	

@@ -18,14 +18,14 @@ public class ResultVO<T> {
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
-	public T getDate() {
-		return date;
+	public T getData() {
+		return data;
 	}
-	public void setDate(T date) {
-		this.date = date;
+	public void setData(T data) {
+		this.data = data;
 	}
 	//提示信息
     private String msg;
     //具体内容
-    private T date;
+    private T data;
 }
