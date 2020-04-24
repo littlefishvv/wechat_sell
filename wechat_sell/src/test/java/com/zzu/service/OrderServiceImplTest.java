@@ -27,7 +27,7 @@ public class OrderServiceImplTest {
 
 	    final static String BUYER_OPENID = "110110110";
 
-	    final static String ORDER_ID = "1508001584066370209";
+	    final static String ORDER_ID = "150800666666370209";
 	    //测试创建订单的功能
 	    //@Test
 	    public void create() throws Exception {
@@ -88,6 +88,12 @@ public class OrderServiceImplTest {
 	        OrderDTO orderDTO = orderService.findOne(ORDER_ID);
 	        OrderDTO result = orderService.pay(orderDTO);
 	        Assert.assertEquals(PayStatusEnum.SUCCESS.getCode(), result.getPayStatus());
+	    }
+	    @Test
+	    public void list(){
+	    	PageRequest request = PageRequest.of(0,2);
+	    	Page<OrderDTO> orderDTOPage=orderService.findList(request);
+	    	Assert.assertNotEquals(0, orderDTOPage.getTotalElements());
 	    }
 
 }

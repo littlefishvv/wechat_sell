@@ -1,6 +1,6 @@
 package com.zzu.enums;
 
-public enum ProductStatusEnum {
+public enum ProductStatusEnum implements CodeEnum{
 	//这其实就是调用下面的构造函数
      up(0,"上架"),
 	downj(1,"下架")

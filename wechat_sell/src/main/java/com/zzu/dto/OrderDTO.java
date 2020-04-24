@@ -1,9 +1,13 @@
 package com.zzu.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.zzu.dataobject.*;
+import com.zzu.enums.OrderStatusEnum;
+import com.zzu.enums.PayStatusEnum;
 import com.zzu.serializer.Date2LongSerializer;
+import com.zzu.utils.EnumUtil;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -48,7 +52,16 @@ public class OrderDTO {
     private Date updateTime;
     
     List<OrderDetail> orderDetailList=new ArrayList<>();
-
+    @JsonIgnore
+    public OrderStatusEnum getOrderStatusEnum(){
+    	
+    	return EnumUtil.getByCode(orderStatus, OrderStatusEnum.class);
+    }
+    @JsonIgnore
+    public PayStatusEnum getPayStatusEnum(){
+    	return EnumUtil.getByCode(payStatus, PayStatusEnum.class);
+    }
+    
 	public String getOrderId() {
 		return orderId;
 	}

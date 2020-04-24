@@ -25,9 +25,9 @@ void decreaseStock(List<CartDTO> cartDTOList);
 void increaseStock(List<CartDTO> cartDTOList);
 
 /**商品下架.*/
-ProductInfo offSafe(ProductInfo productInfo);
+ProductInfo offSale(String productId);
 
 /**商品上架.*/
-ProductInfo onSafe(ProductInfo productInfo);
+ProductInfo onSale(String productId);
 
 }

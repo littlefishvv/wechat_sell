@@ -39,7 +39,7 @@ public ResultVO list(){
 	//2.查询类目 获取上面list中商品的所有类目放到一个列表中，然后通过这个列表找到所有类目信息
 	//这是java8中新语法我也没怎么看懂
 	List<Integer> categoryTypeList=productInfoList.stream()
-			.map(e -> e.getProdcutType()).collect(Collectors.toList());
+			.map(e -> e.getProductType()).collect(Collectors.toList());
 	
 	//根据类目信息列表查询类目列表
 	List<ProductCategory> productCategoryList=categoryService.findCategoryTypeIn(categoryTypeList);
@@ -54,7 +54,7 @@ public ResultVO list(){
 		//定义一个productInfoVO的列表用于容纳productInfo
 		List<ProductInfoVO> productInfoVOList=new ArrayList<>();
 		for(ProductInfo productInfo:productInfoList){
-			if(productInfo.getProdcutType().equals(productCategory.getCategoryType())){
+			if(productInfo.getProductType().equals(productCategory.getCategoryType())){
 				ProductInfoVO productInfoVO=new ProductInfoVO();
 				//spring库提供的这个方法可以自动product Info到productInfoVO中去
 				BeanUtils.copyProperties(productInfo, productInfoVO);

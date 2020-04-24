@@ -38,6 +38,10 @@ public class OrderServiceImpl implements OrderService {
 	private OrderMasterRepository orderMasterRepository;
 	@Autowired 
 	private PayService payService;
+	@Autowired
+	private PushMessage pushMessageSerivce;
+	@Autowired 
+	private WebSocket websocket;
 	@Override
 	//创建订单 一个主订单要有多个订单详情 ，这个方法的目的是创建多个订单详情的记录放到数据库中，一开始的orderdetail并没有在
 	//数据库中，因为只有经过了repository的save方法后才能放到数据库中去
@@ -88,6 +92,8 @@ public class OrderServiceImpl implements OrderService {
                 .map(e -> new CartDTO(e.getProductId() , e.getProductQuantity()))
                 .collect(Collectors.toList());
         productService.decreaseStock(cartDTOList);
+        //在创建好订单后发送消息  向前端传订单号，前端接受订单号并做出反应
+        websocket.sendMessage(orderDTO.getOrderId());
 		return orderDTO;
 	}
 
@@ -161,6 +167,7 @@ public class OrderServiceImpl implements OrderService {
 	}
 
 	@Override
+	@Transactional
 	public OrderDTO finish(OrderDTO orderDTO) {
 		// TODO Auto-generated method stub
 		//1判断订单状态 只有新下单的状态可以被完结
@@ -183,7 +190,8 @@ public class OrderServiceImpl implements OrderService {
             throw new SellException(ResultEnum.ORDER_UPDATE_ERROR);
         }
 		
-		
+		//订单完结后，推送微信模板消息
+        pushMessageSerivce.orderStatus(orderDTO);
 		return orderDTO;
 	}
 
@@ -219,7 +227,10 @@ public class OrderServiceImpl implements OrderService {
 	@Override
 	public Page<OrderDTO> findList(Pageable pageable) {
 		// TODO Auto-generated method stub
-		return null;
+		Page<OrderMaster> orderMasterPage=orderMasterRepository.findAll(pageable);
+		List<OrderDTO> orderDTOList=OrderMaster2OrderDTOConverter.convert(orderMasterPage.getContent());
+		//封装成一个page对象
+		return new PageImpl<>(orderDTOList,pageable,orderMasterPage.getTotalElements());
 	}
 	@Override
     @Transactional

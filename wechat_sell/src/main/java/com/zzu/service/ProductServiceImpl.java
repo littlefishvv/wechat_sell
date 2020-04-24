@@ -91,16 +91,41 @@ public class ProductServiceImpl implements ProductService{
         }
 	}
 
+
+
 	@Override
-	public ProductInfo offSafe(ProductInfo productInfo) {
+	public ProductInfo offSale(String productId) {
 		// TODO Auto-generated method stub
-		return null;
+		Optional<ProductInfo> productInfo=repository.findById(productId);
+		if(!productInfo.isPresent()){
+			throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+		}
+		//如果已经是下架的，那就不能再下架了
+		if(productInfo.orElse(null).getProductStatusEnum()==ProductStatusEnum.downj){
+			throw new SellException(ResultEnum.PRODUCT_STATUS_ERROR);
+		}
+		//更新为下架
+		productInfo.orElse(null).setProductStatus(ProductStatusEnum.downj.getCode());
+		return repository.save(productInfo.orElse(null));
+		
 	}
 
 	@Override
-	public ProductInfo onSafe(ProductInfo productInfo) {
+	public ProductInfo onSale(String productId) {
 		// TODO Auto-generated method stub
-		return null;
+				Optional<ProductInfo> productInfo=repository.findById(productId);
+				if(!productInfo.isPresent()){
+					throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+				}
+				//如果已经是上架的，那就不能再上架了
+				if(productInfo.orElse(null).getProductStatusEnum()==ProductStatusEnum.up){
+					throw new SellException(ResultEnum.PRODUCT_STATUS_ERROR);
+				}
+				//更新
+				productInfo.orElse(null).setProductStatus(ProductStatusEnum.up.getCode());
+				return repository.save(productInfo.orElse(null));
 	}
+
+
     
 }
